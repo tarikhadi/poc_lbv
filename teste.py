@@ -2,13 +2,10 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# Configuração da página
 st.set_page_config(page_title="Dashboard LBV - Doações & Análises", layout="wide", page_icon="💖")
 
-# Exibe o logo da LBV (ajuste o width conforme necessário)
 st.image("/Users/tarikhadi/Desktop/logo.png", width=100)
 
-# Título e descrição
 st.title("Dashboard de Doações e Análises – Legião da Boa Vontade (LBV)")
 st.markdown("""
 Esta aplicação interativa exibe os dados consolidados de 6 doações, com informações e análises detalhadas realizadas pela IA.  
@@ -17,9 +14,6 @@ Você pode escolher entre:
 - **Por ID:** Selecionar um ID de doação para ver todos os detalhes e a análise realizada para aquele registro.
 """)
 
-# =============================================================================
-# 1. Dados das Doações (Hardcoded)
-# =============================================================================
 doacoes_data = [
     {
         "IdGravacao": 722740890,
@@ -135,9 +129,6 @@ df = pd.DataFrame(doacoes_data)
 df["DataDoacao"] = pd.to_datetime(df["DataDoacao"])
 df["DataNascimento"] = pd.to_datetime(df["DataNascimento"])
 
-# =============================================================================
-# 2. Dados das Análises (Hardcoded)
-# =============================================================================
 analysis_data = [
     {
         "IdGravacao": 722740890,
@@ -256,22 +247,16 @@ analysis_data = [
     }
 ]
 
-# =============================================================================
-# 3. Modo de Visualização (Principal Filtro: Global ou Por ID)
-# =============================================================================
+
 modo = st.sidebar.radio("Selecione o Modo de Visualização:", ["Global", "Por ID"])
 
-# =============================================================================
-# 4. Visualização Global: Estatísticas e Gráficos
-# =============================================================================
+
 if modo == "Global":
     st.header("Visão Global das Doações")
     
-    # Exibir dados consolidados
     st.subheader("Dados das Doações")
     st.dataframe(df.reset_index(drop=True))
     
-    # Métricas Gerais
     st.subheader("Métricas Gerais")
     total_doacoes = df.shape[0]
     valor_total = df["ValorDoacao"].sum()
@@ -284,7 +269,6 @@ if modo == "Global":
     
     st.subheader("Visualizações Interativas")
     
-    # Gráfico de barras: Valor por Doador
     fig_bar = px.bar(
         df, 
         x="NomeDoador", 
@@ -295,7 +279,6 @@ if modo == "Global":
     )
     st.plotly_chart(fig_bar, use_container_width=True)
     
-    # Gráfico de pizza: Distribuição por Tipo de Recebimento
     fig_pie = px.pie(
         df, 
         names="TipoRecebimento", 
@@ -304,7 +287,6 @@ if modo == "Global":
     )
     st.plotly_chart(fig_pie, use_container_width=True)
     
-    # Histograma: Distribuição dos Valores
     fig_hist = px.histogram(
         df, 
         x="ValorDoacao", 
@@ -314,7 +296,6 @@ if modo == "Global":
     )
     st.plotly_chart(fig_hist, use_container_width=True)
     
-    # Gráfico de barras: Valor Médio por Empresa
     df_emp = df.groupby("EmpresaRecebimento")["ValorDoacao"].agg(["mean", "sum", "count"]).reset_index()
     fig_bar_emp = px.bar(
         df_emp, 
@@ -328,9 +309,7 @@ if modo == "Global":
     st.markdown("---")
     st.markdown("### Desenvolvido para a Legião da Boa Vontade (LBV) – Juntos pela transformação social!")
 
-# =============================================================================
-# 5. Visualização Por ID: Detalhes e Análise Completa
-# =============================================================================
+
 else:
     st.header("Detalhes da Doação por ID")
     ids_analise = [str(item["IdGravacao"]) for item in analysis_data]
