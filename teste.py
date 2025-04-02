@@ -4,7 +4,7 @@ import plotly.express as px
 
 st.set_page_config(page_title="Dashboard LBV - Doações & Análises", layout="wide", page_icon="💖")
 
-st.image("/Users/tarikhadi/Desktop/logo.png", width=100)
+st.image("logo.png", width=100)
 
 st.title("Dashboard de Doações e Análises – Legião da Boa Vontade (LBV)")
 st.markdown("""
